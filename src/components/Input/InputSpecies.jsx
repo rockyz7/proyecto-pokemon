@@ -10,8 +10,7 @@ const InputSpecies = ({ name, label }) => {
    * Esta función realiza un pedido a la API pokemon para obtener las especies
    * @param {array} queryKey array de dos elementos a la cual tenemos acceso gracias a useQuery
    * @param {number} offset número del paginado que va de 20 en 20
-   * @param {string} key clave para identificar la petición, en este ejemplo no se utiliza
-   * @returns {array}
+   * @param {string} key clave para identificar la petición
    */
   const getPokemonEspecies = async ({ queryKey }) => {
     const [key, offset] = queryKey;
@@ -23,10 +22,6 @@ const InputSpecies = ({ name, label }) => {
     return data.results;
   };
 
-  /**
-   * Implementamos useQuery y le pasamos la función getPokemonEspecies que creamos arriba.
-   * Esta función nos devuelve un array: data, que la renombramos como "especies"
-   */
   const { data: especies } = useQuery(
     ["especies", especiesOffset],
     getPokemonEspecies
@@ -48,7 +43,6 @@ const InputSpecies = ({ name, label }) => {
         especies.map((especie) => (
           <button
             key={especie.name}
-            className="botones-especie"
             onClick={(e) => elegirEspecie(e, especie.name)}
           >
             {especie.name}
@@ -58,35 +52,26 @@ const InputSpecies = ({ name, label }) => {
   );
 
   return (
-    <div className="input-contenedor">
+    <div>
       {mostrarPopup && (
-        <div className="popup-especie">
+        <div>
           <h4>Seleccionar especie</h4>
-          <div className="contenedor-especies">{renderizarEspecies()}</div>
-          <div className="paginador">
+          <div>{renderizarEspecies()}</div>
+          <div>
             <button
-              className="boton-anterior"
               disabled={especiesOffset <= 0 ? true : false}
               onClick={() => setEspeciesOffset(especiesOffset - 20)}
             >
               Anterior
             </button>
-            <button
-              className="boton-siguiente"
-              onClick={() => setEspeciesOffset(especiesOffset + 20)}
-            >
+            <button onClick={() => setEspeciesOffset(especiesOffset + 20)}>
               Siguiente
             </button>
           </div>
         </div>
       )}
       <p htmlFor={name}>{label}</p>
-      <button
-        className="boton-seleccionar-especies"
-        onClick={() => setMostrarPopup(true)}
-      >
-        Seleccionar
-      </button>
+      <button onClick={() => setMostrarPopup(true)}>Seleccionar</button>
     </div>
   );
 };
